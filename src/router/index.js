@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import store from '@/store'
 import NProgress from 'nprogress' // 网页顶部进度
 import routes from './constantRoutes'
 
@@ -9,7 +10,7 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
   NProgress.start()
-  if (to.path !== '/login') {
+  if (!store.getters.isLogin && to.path !== '/login') {
     router.push('/login')
   }
   NProgress.done()

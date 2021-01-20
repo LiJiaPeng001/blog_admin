@@ -12,19 +12,17 @@
         ref="form"
         :model="form"
         :rules="rules"
-        @submit.prevent="onSubmit"
+        @finish="onSubmit"
       >
-        <a-form-item>
+        <a-form-item name="phone">
           <a-input size="large" placeholder="请输入手机号" v-model:value="form.phone">
-            <slot name="prefix"><PhoneTwoTone /></slot>
+            <template #prefix><PhoneFilled /></template>
           </a-input>
         </a-form-item>
-        <a-form-item>
-          <div class="middle-flex">
-            <a-input size="large" placeholder="请输入密码" v-model:value="form.password">
-              <slot name="lock"><LockTwoTone /></slot>
-            </a-input>
-          </div>
+        <a-form-item name="password">
+          <a-input size="large" placeholder="请输入密码" v-model:value="form.password">
+            <template #prefix><LockFilled /></template>
+          </a-input>
         </a-form-item>
         <a-form-item>
           <a-button size="large" style="width: 100%" type="primary" htmlType="submit"
@@ -39,15 +37,15 @@
 </template>
 
 <script>
-import { LockTwoTone, PhoneTwoTone } from '@ant-design/icons-vue';
+import { PhoneFilled, LockFilled } from '@ant-design/icons-vue';
 import BaseFooter from '@/layouts/components/BaseFooter';
 
 const isDev = process.env.NODE_ENV === 'development';
 
 export default {
   components: {
-    LockTwoTone,
-    PhoneTwoTone,
+    LockFilled,
+    PhoneFilled,
     BaseFooter,
   },
   data() {
@@ -74,14 +72,11 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
-      this.$refs.form.validate(async (valid) => {
-        if (!valid) return;
-        await this.$store.dispatch('login', this.form);
-        const routes = await this.$store.dispatch('generateRoutes');
-        this.$router.addRoutes(routes);
-        this.$router.push({ name: 'index' });
-      });
+    async onSubmit() {
+      await this.$refs.form.validate();
+      // this.$router.options.routes = this.$store.state.permission.routes;
+      // console.log(this.$router.options.routes);
+      this.$router.push('/test');
     },
     resetForm() {
       this.$refs.form.resetFields();
