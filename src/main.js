@@ -5,6 +5,8 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 
+import './style/index.less'
+
 const Vue = createApp(App)
 
 Vue.use(router)

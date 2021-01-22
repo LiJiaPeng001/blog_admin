@@ -1,11 +1,12 @@
 import constantRoutes from '@/router/constantRoutes'
 import dynamicRoutes from '@/router/dynamicRoutes'
 
+let routes = [...constantRoutes, ...dynamicRoutes]
+
 const permission = {
   state: {
-    routes: [...constantRoutes, ...dynamicRoutes], // 所有路由
-    addRouters: [], // 新增路由
-    currentRoutes: [],
+    routes, // 所有路由
+    currentRoutes: routes.find((item) => item.path === '/').children,
   },
   mutations: {
     SET_ROUTERS: (state, payload) => {

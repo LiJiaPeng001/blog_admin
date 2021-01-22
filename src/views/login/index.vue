@@ -32,13 +32,11 @@
       </a-form>
       <div class="halo-phone">客服热线：{{ haloPhone }}</div>
     </div>
-    <base-footer class="footer" />
   </div>
 </template>
 
 <script>
 import { PhoneFilled, LockFilled } from '@ant-design/icons-vue';
-import BaseFooter from '@/layouts/components/BaseFooter';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -46,7 +44,6 @@ export default {
   components: {
     LockFilled,
     PhoneFilled,
-    BaseFooter,
   },
   data() {
     return {
