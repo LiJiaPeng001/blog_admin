@@ -11,13 +11,13 @@
       :style="{ width: !setting.collapsed ? '256px' : '' }"
     >
       <template v-for="item in routes" :key="item.path">
-        <template v-if="!item.children">
+        <template v-if="!item.children && item.hidden !== false">
           <a-menu-item :key="item.path">
             <component v-if="item.meta && item.meta.icon" :is="$icon[item.meta.icon]"></component>
             <span>{{ item.meta ? item.meta.title : item.name }}</span>
           </a-menu-item>
         </template>
-        <template v-else>
+        <template v-if="item.children">
           <sub-menu :menu-info="item" :key="item.key" />
         </template>
       </template>

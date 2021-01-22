@@ -26,8 +26,8 @@ export default [
     path: '/',
     name: 'index',
     component: BaseLayout,
-    meta: { title: '' },
-    redirect: 'Home',
+    meta: { title: 'Home' },
+    redirect: '/home',
     children: routes,
   },
   {
