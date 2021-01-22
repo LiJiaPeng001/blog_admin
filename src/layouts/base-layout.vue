@@ -2,8 +2,8 @@
   <div class="base-layout flex">
     <slide-menu></slide-menu>
     <div class="page-container">
-      <page-head></page-head>
-      <router-view></router-view>
+      <page-head />
+      <main><router-view /></main>
     </div>
   </div>
 </template>
@@ -23,5 +23,9 @@ export default {
 <style lang='less' scoped>
 .page-container {
   flex: 1;
+  background: #f0f2f5;
+  main {
+    margin: 24px;
+  }
 }
 </style>

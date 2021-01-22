@@ -4,7 +4,7 @@
       <img :src="setting.cover" class="img" />
     </div>
     <a-menu
-      :value="selectedKeys"
+      :selectedKeys="selectedKeys"
       :inline-collapsed="setting.collapsed"
       mode="inline"
       @click="handleClick"
@@ -13,6 +13,7 @@
       <template v-for="item in routes" :key="item.path">
         <template v-if="!item.children">
           <a-menu-item :key="item.path">
+            <component v-if="item.meta && item.meta.icon" :is="$icon[item.meta.icon]"></component>
             <span>{{ item.meta ? item.meta.title : item.name }}</span>
           </a-menu-item>
         </template>
@@ -36,19 +37,14 @@ export default {
       return [this.$route.path];
     },
     setting() {
-      console.log(this.$store.state.setting);
       return this.$store.state.setting;
     },
     routes() {
       return this.$store.state.permission.currentRoutes;
     },
   },
-  mounted() {
-    console.log(this.setting);
-  },
   methods: {
     handleClick({ key }) {
-      console.log(key, 'key');
       this.$router.push(key);
     },
   },

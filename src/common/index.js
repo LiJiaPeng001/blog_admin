@@ -1,7 +1,12 @@
-const files = require.context('./', true, /index.vue/)
-
-console.log(files)
-files.keys().forEach((key) => {
-  const route = files(key).default
-  console.log(route, 'ee')
-})
+const components = {}
+function requireAll(r) {
+  return r.keys().map((key) => {
+    const name = key
+      .replace(/^\.\//, '')
+      .replace(/\/index.vue$/, '')
+      .replace(/([A-Z])/g, '-$1')
+      .toLowerCase()
+    components[name] = r(key).default
+  })
+}
+export default requireAll(require.context('./', true, /index\.vue/))
