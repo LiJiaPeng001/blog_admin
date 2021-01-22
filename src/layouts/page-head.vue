@@ -1,11 +1,32 @@
 <template>
-  <div class="layout-header">
+  <div class="layout-header middle-flex">
+    <a-button type="primary" @click="handleClick">
+      <MenuUnfoldOutlined v-if="set.collapsed" />
+      <MenuFoldOutlined v-else />
+    </a-button>
     <div class="title">我是头部</div>
   </div>
 </template>
 
 <script>
-export default {};
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue';
+
+export default {
+  components: {
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
+  },
+  computed: {
+    set() {
+      return this.$store.state.setting;
+    },
+  },
+  methods: {
+    handleClick() {
+      this.$store.commit('SET_SETTING', { collapsed: !this.set.collapsed });
+    },
+  },
+};
 </script>
 
 <style lang='less' scoped>

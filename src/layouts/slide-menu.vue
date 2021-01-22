@@ -3,10 +3,16 @@
     <div class="slider-logo">
       <img :src="setting.cover" class="img" />
     </div>
-    <a-menu mode="inline" @click="handleClick">
-      <template v-for="item in routes" :key="item.key">
+    <a-menu
+      :value="selectedKeys"
+      :inline-collapsed="setting.collapsed"
+      mode="inline"
+      @click="handleClick"
+      :style="{ width: !setting.collapsed ? '256px' : '' }"
+    >
+      <template v-for="item in routes" :key="item.path">
         <template v-if="!item.children">
-          <a-menu-item :key="item.key">
+          <a-menu-item :key="item.path">
             <span>{{ item.meta ? item.meta.title : item.name }}</span>
           </a-menu-item>
         </template>
@@ -26,7 +32,11 @@ export default {
     subMenu,
   },
   computed: {
+    selectedKeys() {
+      return [this.$route.path];
+    },
     setting() {
+      console.log(this.$store.state.setting);
       return this.$store.state.setting;
     },
     routes() {
@@ -34,11 +44,12 @@ export default {
     },
   },
   mounted() {
-    console.log(this.routes);
+    console.log(this.setting);
   },
   methods: {
-    handleClick(e) {
-      console.log(e);
+    handleClick({ key }) {
+      console.log(key, 'key');
+      this.$router.push(key);
     },
   },
 };
@@ -49,10 +60,8 @@ export default {
   flex-shrink: 0;
   height: 100vh;
   box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
-  flex: 0 0 256px;
   max-width: 256px;
-  min-width: 256px;
-  width: 256px;
+  transition: all 0.3s;
   .slider-logo {
     position: relative;
     height: 64px;

@@ -5,7 +5,7 @@ let routes = [
   {
     path: '/home',
     name: 'Home',
-    meta: { title: '博客管理', icon: 'home' },
+    meta: { title: '博客管理', icon: 'HomeOutlined' },
     hidden: true,
     component: () => import('../../views/home/index'),
   },
