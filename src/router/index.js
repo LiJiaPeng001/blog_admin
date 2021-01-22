@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-// import store from '@/store'
 import NProgress from 'nprogress' // 网页顶部进度
 import routes from './constantRoutes'
 import dynamicRoutes from './dynamicRoutes'
