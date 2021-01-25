@@ -15,7 +15,7 @@ export function add(data) {
 }
 export function update(data) {
   return request({
-    url: '/api/koa-blog/cate',
+    url: `/api/koa-blog/cate/${data.id}`,
     method: 'put',
     data,
   })

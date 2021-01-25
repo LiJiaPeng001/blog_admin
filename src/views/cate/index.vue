@@ -1,13 +1,13 @@
 <template>
   <page-layout>
     <a-card :columns="columns" :data-source="list">
-      <search v-model:payload="payload"></search>
+      <search @fetch="fetchList" v-model:payload="payload"></search>
       <a-button style="margin-bottom: 15px" type="primary" @click="open">添加</a-button>
       <a-table rowKey="id" :columns="columns" :data-source="list">
         <template #action="{ record }">
           <div class="action-box">
             <span class="primary" @click="open(record)">编辑</span>
-            <span class="error">删除</span>
+            <!-- <span class="error">删除</span> -->
           </div>
         </template>
       </a-table>
@@ -75,12 +75,11 @@ export default {
   },
   methods: {
     open(item = {}) {
-      console.log(item, 'item');
       this.record = { ...item };
       this.visible = true;
     },
     async fetchList() {
-      const { list, total } = await Api.list();
+      const { list, total } = await Api.list(this.payload);
       this.list = list;
       this.total = total;
     },
