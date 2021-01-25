@@ -1,12 +1,14 @@
 <template>
-  <a-card :columns="columns" :data-source="list">
-    <search v-model:payload="payload"></search>
-    <a-table>
-      <template #action>
-        <span>详情</span>
-      </template>
-    </a-table>
-  </a-card>
+  <page-layout>
+    <a-card :columns="columns" :data-source="list">
+      <search v-model:payload="payload"></search>
+      <a-table>
+        <template #action>
+          <span>详情</span>
+        </template>
+      </a-table>
+    </a-card>
+  </page-layout>
 </template>
 
 <script>

@@ -1,20 +1,11 @@
 <template>
   <div class="layout-header">
-    <!-- header -->
     <div class="top middle-flex">
       <a-button :type="set.theme === 'light' ? 'default' : 'primary'" @click="handleClick">
         <MenuUnfoldOutlined v-if="set.collapsed" />
         <MenuFoldOutlined v-else />
       </a-button>
       <div class="title">我是头部</div>
-    </div>
-    <!-- 面包屑 -->
-    <div class="crumbs">
-      <a-breadcrumb>
-        <a-breadcrumb-item v-for="it in $route.matched" :key="it.path">
-          <router-link :to="{ path: it.path }">{{ it.meta ? it.meta.title : it.name }}</router-link>
-        </a-breadcrumb-item>
-      </a-breadcrumb>
     </div>
   </div>
 </template>
@@ -50,9 +41,6 @@ export default {
     line-height: 64px;
     padding: 0 22px;
     justify-content: space-between;
-  }
-  .crumbs {
-    padding: 16px 24px;
   }
 }
 </style>

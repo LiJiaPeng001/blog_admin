@@ -3,7 +3,7 @@
     <slide-menu></slide-menu>
     <div class="page-container">
       <page-head />
-      <main><router-view /></main>
+      <router-view />
     </div>
   </div>
 </template>

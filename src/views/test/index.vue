@@ -1,5 +1,7 @@
 <template>
-  <div class="test">我是测试哦</div>
+  <page-layout>
+    <div class="test">我是测试哦</div>
+  </page-layout>
 </template>
 
 <script>

@@ -1,7 +1,7 @@
 <template>
-  <div class="home-container">
+  <page-layout class="home-container">
     <div class="title">我是主页</div>
-  </div>
+  </page-layout>
 </template>
 
 <script>
