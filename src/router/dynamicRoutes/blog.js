@@ -6,7 +6,13 @@ export default [
     component: () => import('@/views/blog'),
   },
   {
-    path: '/blog-detail',
+    path: '/blog-cate',
+    name: '分类管理',
+    meta: { title: '分类管理', icon: 'CreditCardOutlined' },
+    component: () => import('@/views/cate'),
+  },
+  {
+    path: '/blog/detail',
     name: '博客详情',
     hidden: false,
     meta: { title: '博客详情' },

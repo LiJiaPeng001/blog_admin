@@ -1,22 +1,35 @@
 <template>
   <page-layout>
     <a-card :columns="columns" :data-source="list">
-      <search @fetch="fetchList" v-model:payload="payload"></search>
+      <search v-model:payload="payload"></search>
       <a-button style="margin-bottom: 15px" type="primary" @click="open">添加</a-button>
       <a-table rowKey="id" :columns="columns" :data-source="list">
         <template #action="{ record }">
           <div class="action-box">
             <span class="primary" @click="open(record)">编辑</span>
-            <span class="error" @click="remove(record)">删除</span>
+            <span class="error">删除</span>
           </div>
         </template>
       </a-table>
+      <a-modal title="操作" v-model:visible="visible" @ok="submit">
+        <a-form
+          ref="ruleForm"
+          :model="record"
+          :rules="rules"
+          :label-col="labelCol"
+          :wrapper-col="wrapperCol"
+        >
+          <a-form-item name="name" label="分类名称">
+            <a-input v-model:value="record.name" />
+          </a-form-item>
+        </a-form>
+      </a-modal>
     </a-card>
   </page-layout>
 </template>
 
 <script>
-import * as Api from '@/api/blog';
+import * as Api from '@/api/cate';
 import search from './search';
 
 export default {
@@ -32,11 +45,7 @@ export default {
         },
         {
           title: '标题',
-          dataIndex: 'title',
-        },
-        {
-          title: '分类名称',
-          dataIndex: 'cate.name',
+          dataIndex: 'name',
         },
         {
           title: '创建时间',
@@ -50,9 +59,14 @@ export default {
       ],
       list: [],
       payload: {
-        page: 1,
-        per_page: 12,
-        title: '',
+        name: '',
+      },
+      record: {},
+      visible: false,
+      labelCol: { span: 4 },
+      wrapperCol: { span: 12 },
+      rules: {
+        name: [{ required: true, message: '请输入分类名称' }],
       },
     };
   },
@@ -60,23 +74,13 @@ export default {
     this.fetchList();
   },
   methods: {
-    open({ id = '' }) {
-      this.$router.push({
-        path: '/blog/detail',
-        query: { id },
-      });
-    },
-    remove({ id }) {
-      this.$confirm({
-        content: '您确定要删除嘛？',
-        onOk: async () => {
-          await Api.remove(id);
-          this.fetchList();
-        },
-      });
+    open(item = {}) {
+      console.log(item, 'item');
+      this.record = { ...item };
+      this.visible = true;
     },
     async fetchList() {
-      const { list, total } = await Api.list(this.payload);
+      const { list, total } = await Api.list();
       this.list = list;
       this.total = total;
     },

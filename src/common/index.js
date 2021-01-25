@@ -9,4 +9,7 @@ function requireAll(r) {
     components[name] = r(key).default
   })
 }
-export default requireAll(require.context('./', true, /index\.vue/))
+
+requireAll(require.context('./', true, /index\.vue/))
+
+export default components

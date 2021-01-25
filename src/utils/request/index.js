@@ -1,12 +1,12 @@
-import authority from "@/utils/authority";
-import requestApi from "./axios";
+import authority from '@/utils/authority'
+import requestApi from './axios'
 
-export default async function(options = {}, configs = {}) {
-  const user = authority.get();
+export default function(options = {}, configs = {}) {
+  const user = authority.get()
   if (user.token) {
     options.headers = {
-      Authorization: `bearer ${user.token}`
-    };
+      Authorization: `bearer ${user.token}`,
+    }
   }
-  return requestApi(options, configs);
+  return requestApi(options, configs)
 }
