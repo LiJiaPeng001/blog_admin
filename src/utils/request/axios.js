@@ -1,9 +1,12 @@
 import Axios from 'axios'
 import router from '@/router'
 import { message } from 'ant-design-vue'
+import { baseURL, isDev } from '@/contants'
 import { getErrMsg, getErrStatus } from './status'
 
-const instance = Axios.create()
+const instance = Axios.create({
+  baseURL: isDev ? '' : baseURL,
+})
 
 export default (
   options = {
