@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import NProgress from 'nprogress' // 网页顶部进度
+import store from '@/store'
 import routes from './constantRoutes'
 import dynamicRoutes from './dynamicRoutes'
 
@@ -8,11 +9,11 @@ const router = createRouter({
   routes: [...routes, ...dynamicRoutes],
 })
 
-router.beforeEach(async () => {
+router.beforeEach(async (to) => {
   NProgress.start()
-  // if (!store.getters.isLogin && to.path !== '/login') {
-  //   router.push('/login')
-  // }
+  if (!store.getters.isLogin && to.path !== '/login') {
+    router.push('/login')
+  }
   NProgress.done()
 })
 

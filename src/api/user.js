@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/api/crm/v1/auth/login',
+    url: '/api/common-user/login',
     method: 'post',
     data,
   })

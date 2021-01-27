@@ -54,7 +54,6 @@ export default {
       form: {
         phone: isDev ? '13673717028' : '',
         password: isDev ? '123456' : '',
-        status: 'online',
       },
       rules: {
         phone: [
@@ -71,9 +70,8 @@ export default {
   methods: {
     async onSubmit() {
       await this.$refs.form.validate();
-      // this.$router.options.routes = this.$store.state.permission.routes;
-      // console.log(this.$router.options.routes);
-      this.$router.push('/test');
+      await this.$store.dispatch('login', this.form);
+      this.$router.replace('/home');
     },
     resetForm() {
       this.$refs.form.resetFields();

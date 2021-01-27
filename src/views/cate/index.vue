@@ -85,7 +85,6 @@ export default {
     },
     async submit() {
       await this.$refs.ruleForm.validate();
-      console.log(this.record);
       if (this.record.id) {
         await Api.update(this.record);
       } else {
