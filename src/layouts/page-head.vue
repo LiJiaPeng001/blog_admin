@@ -5,27 +5,50 @@
         <MenuUnfoldOutlined v-if="set.collapsed" />
         <MenuFoldOutlined v-else />
       </a-button>
-      <div class="title">我是头部</div>
+      <a-popover>
+        <template #content>
+          <p class="text" @click="logout">退出登录</p>
+        </template>
+        <div class="user-info middle-flex">
+          <div
+            class="avatar cover"
+            :style="{ backgroundImage: `url(${user.avatar || imgUrl})` }"
+          ></div>
+          <div class="name">{{ user.nickName }}</div>
+        </div>
+      </a-popover>
     </div>
   </div>
 </template>
 
 <script>
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue';
+import { imgUrl } from '@/contants';
 
 export default {
   components: {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
   },
+  data() {
+    return {
+      imgUrl,
+    };
+  },
   computed: {
     set() {
       return this.$store.state.setting;
+    },
+    user() {
+      return this.$store.state.user.user;
     },
   },
   methods: {
     handleClick() {
       this.$store.commit('SET_SETTING', { collapsed: !this.set.collapsed });
+    },
+    logout() {
+      this.$store.dispatch('logout');
     },
   },
 };
@@ -41,6 +64,17 @@ export default {
     line-height: 64px;
     padding: 0 22px;
     justify-content: space-between;
+  }
+  .user-info {
+    cursor: pointer;
+    .name {
+      margin-left: 10px;
+    }
+    .avatar {
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+    }
   }
 }
 </style>

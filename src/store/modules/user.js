@@ -29,9 +29,8 @@ const actions = {
     commit('SET_USER', { user: data })
   },
   // 登出
-  async logout({ commit }) {
+  async logout() {
     authority.clear()
-    commit('SET_USER', { user: {} })
     window.location.reload()
   },
 }
