@@ -6,7 +6,7 @@ export const isDev = env === 'development'
 
 export const apiMaps = {
   development: 'http://127.0.0.1:1202',
-  production: 'http://api.ljpeng.fun',
+  production: 'http://ljpeng.fun:1202',
 }
 
 export const baseURL = apiMaps[process.env.NODE_ENV]

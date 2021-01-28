@@ -1,8 +1,9 @@
 let env = process.env.NODE_ENV
 
+// development: 'http://127.0.0.1:1202',
 const apiMaps = {
-  development: 'http://127.0.0.1:1202',
-  production: 'http://api.ljpeng.fun',
+  development: 'http://ljpeng.fun:1202',
+  production: 'http://ljpeng.fun:1202',
 }
 
 module.exports = {
@@ -19,7 +20,6 @@ module.exports = {
     proxy: {
       '/api': {
         target: apiMaps[env],
-        ws: true,
         changOrigin: true, //开启代理
       },
     },
