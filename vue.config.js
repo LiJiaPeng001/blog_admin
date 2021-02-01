@@ -1,9 +1,8 @@
 let env = process.env.NODE_ENV
 
-// development: 'http://127.0.0.1:1202',
 const apiMaps = {
-  development: 'http://ljpeng.fun:1202',
-  production: 'http://ljpeng.fun:1202',
+  development: 'http://127.0.0.1:1202',
+  production: 'https://www.ljpeng.fun',
 }
 
 module.exports = {
@@ -21,6 +20,9 @@ module.exports = {
       '/api': {
         target: apiMaps[env],
         changOrigin: true, //开启代理
+        pathRewrite: {
+          '^/api': '/',
+        },
       },
     },
   },
