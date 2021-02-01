@@ -6,6 +6,9 @@ const apiMaps = {
 }
 
 module.exports = {
+  publicPath: process.env.NODE_ENV === 'production' ? '/web/admin' : './',
+  outputDir: 'dist',
+  assetsDir: 'assets',
   css: {
     loaderOptions: {
       less: {
