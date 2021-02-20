@@ -23,9 +23,6 @@ module.exports = {
       '/api': {
         target: apiMaps[env],
         changOrigin: true, //开启代理
-        pathRewrite: {
-          '^/api': '/',
-        },
       },
     },
   },

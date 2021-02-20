@@ -58,6 +58,10 @@ export default {
   box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
   max-width: 256px;
   transition: all 0.3s;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: #fff;
   .slider-logo {
     position: relative;
     height: 64px;

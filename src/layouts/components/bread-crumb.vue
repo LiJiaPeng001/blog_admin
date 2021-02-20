@@ -39,5 +39,6 @@ export default {
 }
 .main-content {
   padding: 24px;
+  min-height: calc(100vh - 165px);
 }
 </style>
