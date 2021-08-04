@@ -15,17 +15,29 @@
         @finish="onSubmit"
       >
         <a-form-item name="phone">
-          <a-input size="large" placeholder="请输入手机号" v-model:value="form.phone">
+          <a-input
+            size="large"
+            placeholder="请输入手机号"
+            v-model:value="form.phone"
+          >
             <template #prefix><PhoneFilled /></template>
           </a-input>
         </a-form-item>
         <a-form-item name="password">
-          <a-input size="large" placeholder="请输入密码" v-model:value="form.password">
+          <a-input
+            size="large"
+            placeholder="请输入密码"
+            v-model:value="form.password"
+          >
             <template #prefix><LockFilled /></template>
           </a-input>
         </a-form-item>
         <a-form-item>
-          <a-button size="large" style="width: 100%" type="primary" htmlType="submit"
+          <a-button
+            size="large"
+            style="width: 100%"
+            type="primary"
+            htmlType="submit"
             >登录</a-button
           >
         </a-form-item>
@@ -36,9 +48,7 @@
 </template>
 
 <script>
-import { PhoneFilled, LockFilled } from '@ant-design/icons-vue';
-
-const isDev = process.env.NODE_ENV === 'development';
+import { PhoneFilled, LockFilled } from "@ant-design/icons-vue";
 
 export default {
   components: {
@@ -52,26 +62,26 @@ export default {
       title: process.env.VUE_APP_HOME_TITLE,
       haloPhone: process.env.VUE_APP_HALO_PHONE,
       form: {
-        phone: isDev ? '13673717028' : '',
-        password: isDev ? '123456' : '',
+        phone: "13673717028",
+        password: "123456",
       },
       rules: {
         phone: [
           {
             required: true,
             pattern: /^1\d{10}$/,
-            message: '请正确输入手机号',
+            message: "请正确输入手机号",
           },
         ],
-        password: [{ required: true, message: '请输入验证码' }],
+        password: [{ required: true, message: "请输入验证码" }],
       },
     };
   },
   methods: {
     async onSubmit() {
       await this.$refs.form.validate();
-      await this.$store.dispatch('login', this.form);
-      this.$router.replace('/home');
+      await this.$store.dispatch("login", this.form);
+      this.$router.replace("/home");
     },
     resetForm() {
       this.$refs.form.resetFields();
