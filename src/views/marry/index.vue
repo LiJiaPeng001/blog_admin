@@ -2,9 +2,14 @@
   <page-layout>
     <a-card :columns="columns" :data-source="list">
       <search @fetch="fetchList" v-model:payload="payload"></search>
-      <a-button style="margin-bottom: 15px" type="primary" @click="open"
-        >添加</a-button
-      >
+      <div class="middle-flex">
+        <a-button style="margin: 0 15px 15px 0" type="primary" @click="open"
+          >添加</a-button
+        >
+        <a-button style="margin-bottom: 15px" type="default" @click="onExport"
+          >导出xlsx</a-button
+        >
+      </div>
       <a-table rowKey="id" :columns="columns" :data-source="list">
         <template #action="{ record }">
           <div class="action-box">
@@ -56,6 +61,7 @@
 <script>
 import * as Api from "@/api/marry";
 import search from "./search";
+import { JSONToExcel } from "kuan-utils/lib/xlsx";
 
 export default {
   components: {
@@ -108,6 +114,7 @@ export default {
       ],
       visible: false,
       list: [],
+      totoalList: [],
       payload: {
         page: 1,
         per_page: 12,
@@ -120,6 +127,25 @@ export default {
     this.fetchList();
   },
   methods: {
+    async onExport() {
+      const { list } = await Api.list({ per_page: 999 });
+      let header = this.columns
+        .filter((it) => it.dataIndex)
+        .reduce((all, item) => {
+          all[item.dataIndex] = item.title;
+          return all;
+        }, {});
+      await JSONToExcel({
+        name: "浪的婚礼宾客登记名单",
+        header,
+        data: list.map((it) => {
+          return Object.keys(header).reduce((all, item) => {
+            all[item] = it[item];
+            return all;
+          }, {});
+        }),
+      });
+    },
     open(record = {}) {
       this.record = { ...record };
       this.visible = true;
