@@ -1,7 +1,8 @@
 let env = process.env.NODE_ENV
 
 const apiMaps = {
-  development: 'http://127.0.0.1:1202',
+  development: 'https://www.ljpeng.fun',
+  // development: 'http://127.0.0.1:1202',
   production: 'https://www.ljpeng.fun',
 }
 
