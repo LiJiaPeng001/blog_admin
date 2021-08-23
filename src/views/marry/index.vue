@@ -10,7 +10,12 @@
           >导出xlsx</a-button
         >
       </div>
-      <a-table rowKey="id" :columns="columns" :data-source="list">
+      <a-table
+        :pagination="false"
+        rowKey="id"
+        :columns="columns"
+        :data-source="list"
+      >
         <template #action="{ record }">
           <div class="action-box">
             <span class="primary" @click="open(record)">编辑</span>
@@ -18,6 +23,14 @@
           </div>
         </template>
       </a-table>
+      <a-pagination
+        style="margin-top: 20px"
+        :current="payload.page"
+        :pageSize="payload.per_page"
+        :total="total"
+        show-less-items
+        @change="changeSize"
+      />
     </a-card>
     <a-modal title="详情" v-model:visible="visible" @ok="submit">
       <a-form
@@ -68,6 +81,7 @@ export default {
     search,
   },
   data() {
+    let { page = 1, per_page = 12 } = this.$route.query;
     return {
       labelCol: { span: 6 },
       wrapperCol: { span: 12 },
@@ -114,10 +128,11 @@ export default {
       ],
       visible: false,
       list: [],
+      total: 0,
       totoalList: [],
       payload: {
-        page: 1,
-        per_page: 12,
+        page: Number(page),
+        per_page: Number(per_page),
         name: "",
       },
       record: {},
@@ -127,6 +142,10 @@ export default {
     this.fetchList();
   },
   methods: {
+    changeSize(page) {
+      this.payload.page = page;
+      this.fetchList();
+    },
     async onExport() {
       const { list } = await Api.list({ per_page: 999 });
       let header = this.columns
