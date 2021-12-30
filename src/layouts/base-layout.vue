@@ -3,26 +3,23 @@
     <slide-menu></slide-menu>
     <div class="page-container" :class="{ 'mini-container': setting.collapsed }">
       <page-head />
-      <router-view />
+      <router-view :key="route.fullPath" />
     </div>
   </div>
 </template>
 
-<script>
-import pageHead from './page-head';
-import slideMenu from './slide-menu';
+<script setup lang='ts'>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex'
+import pageHead from './page-head.vue';
+import slideMenu from './slide-menu.vue';
 
-export default {
-  components: {
-    pageHead,
-    slideMenu,
-  },
-  computed: {
-    setting() {
-      return this.$store.state.setting;
-    },
-  },
-};
+const store = useStore()
+const route = useRoute()
+
+const setting = computed(() => store.state.setting)
+
 </script>
 
 <style lang='less' scoped>

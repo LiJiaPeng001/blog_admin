@@ -7,7 +7,6 @@
         <template #action="{ record }">
           <div class="action-box">
             <span class="primary" @click="open(record)">编辑</span>
-            <!-- <span class="error">删除</span> -->
           </div>
         </template>
       </a-table>
@@ -28,75 +27,69 @@
   </page-layout>
 </template>
 
-<script>
+<script setup lang='ts'>
 import * as Api from '@/api/cate';
-import search from './search';
+import { getCurrentInstance, reactive, ref } from 'vue';
+import search from './search.vue';
 
-export default {
-  components: {
-    search,
+const columns = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
   },
-  data() {
-    return {
-      columns: [
-        {
-          title: 'ID',
-          dataIndex: 'id',
-        },
-        {
-          title: '标题',
-          dataIndex: 'name',
-        },
-        {
-          title: '创建时间',
-          dataIndex: 'createdAt',
-        },
-        {
-          title: '操作',
-          key: 'action',
-          slots: { customRender: 'action' },
-        },
-      ],
-      list: [],
-      payload: {
-        name: '',
-      },
-      record: {},
-      visible: false,
-      labelCol: { span: 4 },
-      wrapperCol: { span: 12 },
-      rules: {
-        name: [{ required: true, message: '请输入分类名称' }],
-      },
-    };
+  {
+    title: '标题',
+    dataIndex: 'name',
   },
-  mounted() {
-    this.fetchList();
+  {
+    title: '创建时间',
+    dataIndex: 'createdAt',
   },
-  methods: {
-    open(item = {}) {
-      this.record = { ...item };
-      this.visible = true;
-    },
-    async fetchList() {
-      const { list, total } = await Api.list(this.payload);
-      this.list = list;
-      this.total = total;
-    },
-    async submit() {
-      await this.$refs.ruleForm.validate();
-      if (this.record.id) {
-        await Api.update(this.record);
-      } else {
-        await Api.add(this.record);
-      }
-      this.$message.success(this.record.id ? '更新成功' : '添加成功');
-      this.visible = false;
-      this.fetchList();
-    },
+  {
+    title: '操作',
+    key: 'action',
+    slots: { customRender: 'action' },
   },
-};
+]
+interface RecordInter {
+  id: string | number,
+  name: string
+}
+
+let instance: any = getCurrentInstance()
+let list = ref([])
+let payload = reactive({ name: '' })
+let record = ref<RecordInter>({ id: '', name: '' })
+let visible = ref(false)
+let total = ref(0)
+let labelCol = { span: 4 }
+let wrapperCol = { span: 12 }
+let ruleForm = ref()
+let rules = {
+  name: [{ required: true, message: '请输入分类名称' }]
+}
+
+let open = (item: RecordInter) => {
+  record.value = { ...item };
+  visible.value = true;
+}
+let fetchList = async () => {
+  const data = await Api.list(payload);
+  list.value = data.list;
+  total.value = data.total;
+}
+let submit = async () => {
+  await ruleForm.value.validate();
+  if (record.value.id) {
+    await Api.update(record.value);
+  } else {
+    await Api.add(record.value);
+  }
+  instance.proxy.$success(record.value.id ? '更新成功' : '添加成功');
+  visible.value = false;
+  fetchList();
+}
+
+fetchList()
+
 </script>
-
-<style>
-</style>

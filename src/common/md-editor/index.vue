@@ -17,97 +17,91 @@
   </div>
 </template>
 
-<script>
+<script setup lang='ts'>
+import { defineProps, watchEffect, onMounted, ref } from 'vue'
 import MarkdowIt from 'markdown-it';
-
 import hljs from './utils/hljs';
 import SyncScroll from './utils/SyncScroll';
-import copy from './utils/copy';
+import copyText from './utils/copy';
 
 import './style/index.less';
 
-export default {
-  props: {
-    value: {
-      type: String,
-      default: '',
-    },
-    sync: {
-      type: Boolean,
-      default: true,
-    },
-    multiple: {
-      type: Boolean,
-      default: false,
-    },
+const props = defineProps({
+  value: {
+    type: String,
+    default: '',
   },
-  data() {
-    return {
-      v: this.value,
-      transfer: '',
-      visible: true,
-    };
+  sync: {
+    type: Boolean,
+    default: true,
   },
-  watch: {
-    value() {
-      if (this.v == this.value) return;
-      this.v = this.value;
-      this.transferValue();
-    },
+  multiple: {
+    type: Boolean,
+    default: false,
   },
-  mounted() {
-    if (this.sync) {
-      const { editor, preview } = this.$refs;
-      this.syncScroll = new SyncScroll(editor, preview);
-    }
-    this.init();
-    this.transferValue();
-  },
-  beforeMount() {
-    if (this.syncScroll) {
-      this.syncScroll.destroy();
-    }
-  },
-  methods: {
-    init() {
-      this.md = new MarkdowIt({
-        highlight(str, lang) {
-          if (lang && hljs.getLanguage(lang)) {
-            try {
-              return `<pre class="hljs"><code>${
-                hljs.highlight(lang, str, true).value
-              }</code></pre>`;
-            } catch (e) {
-              console.error('highlight.js:', e);
-            }
-          }
-          return ''; // use external default escaping
-        },
-      });
-    },
-    transferValue() {
-      if (!this.v) {
-        return (this.transfer = '');
+})
+
+const { value = '' } = props
+
+const emits = defineEmits(['copy', 'update:value'])
+
+let v = ref(value)
+let transfer = ref("")
+let visible = ref(true)
+let editor = ref()
+let preview = ref()
+let syncScroll
+let md: any
+
+watchEffect(() => {
+  if (v.value == props.value) return;
+  v.value = props.value;
+  transferValue();
+})
+
+onMounted(() => {
+  if (props.sync) {
+    syncScroll = new SyncScroll(editor.value, preview.value);
+  }
+  init();
+  transferValue();
+})
+let init = () => {
+  md = new MarkdowIt({
+    highlight(str: string, lang: string) {
+      if (lang && hljs.getLanguage(lang)) {
+        console.log(hljs.highlight(lang, str, true).value)
+        try {
+          return `<pre class="hljs"><code>${hljs.highlight(lang, str, true).value
+            }</code></pre>`;
+        } catch (e) {
+          console.error('highlight.js:', e);
+        }
       }
-      this.transfer = this.md.render(this.v);
+      return ''; // use external default escaping
     },
-    change(e) {
-      const { value } = e.target;
-      this.v = value;
-      this.transferValue();
-      this.$emit('update:value', value);
-    },
-    copy() {
-      copy(this.transfer);
-      this.$emit('copy', this.transfer);
-      alert('复制HTML成功');
-    },
-  },
-};
+  });
+}
+let transferValue = () => {
+  if (!v) {
+    return (transfer.value = '');
+  }
+  transfer.value = md.render(v.value);
+}
+let change = (e: Event) => {
+  const { value = '' } = e.target as HTMLTextAreaElement;
+  v.value = value;
+  emits('update:value', value);
+}
+let copy = () => {
+  copyText(transfer.value)
+  emits('copy', transfer.value);
+  alert('复制HTML成功');
+}
 </script> 
 
 <style lang="less" scoped>
-@import './style/mixins.less';
+@import "./style/mixins.less";
 
 .md-outer {
   min-height: 300px;

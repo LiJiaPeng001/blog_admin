@@ -25,30 +25,27 @@
   </div>
 </template>
 
-<script>
-import subMenu from './components/sub-menu';
+<script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router'
+import { computed, getCurrentInstance } from 'vue';
+import { useStore } from 'vuex'
+import SubMenu from './components/sub-menu.vue';
 
-export default {
-  components: {
-    subMenu,
-  },
-  computed: {
-    selectedKeys() {
-      return [this.$route.path];
-    },
-    setting() {
-      return this.$store.state.setting;
-    },
-    routes() {
-      return this.$store.state.permission.currentRoutes;
-    },
-  },
-  methods: {
-    handleClick({ key }) {
-      this.$router.push(key);
-    },
-  },
-};
+let route = useRoute()
+let router = useRouter()
+let store = useStore()
+let instance: any = getCurrentInstance()
+
+let selectedKeys = computed(() => [route.path])
+let setting = computed(() => store.state.setting)
+let routes = computed(() => store.state.permission.currentRoutes)
+
+let $icon = instance.proxy.$icon
+
+let handleClick = ({ key = '' }: { key: string }) => {
+  router.push(key);
+}
+
 </script>
 
 <style lang='less' scoped>

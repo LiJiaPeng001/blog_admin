@@ -6,14 +6,11 @@
         <MenuFoldOutlined v-else />
       </a-button>
       <a-popover>
-        <template #content>
+        <template v-slot:content>
           <p class="text" @click="logout">退出登录</p>
         </template>
         <div class="user-info middle-flex">
-          <div
-            class="avatar cover"
-            :style="{ backgroundImage: `url(${user.avatar || imgUrl})` }"
-          ></div>
+          <div class="avatar cover" :style="{ backgroundImage: `url(${user.avatar || imgUrl})` }"></div>
           <div class="name">{{ user.nickName }}</div>
         </div>
       </a-popover>
@@ -21,37 +18,21 @@
   </div>
 </template>
 
-<script>
+<script setup lang='ts'>
+import { useStore } from 'vuex'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue';
-import { imgUrl } from '@/contants';
+import { imgUrl } from '@/constans/index';
+import { computed } from 'vue';
 
-export default {
-  components: {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-  },
-  data() {
-    return {
-      imgUrl,
-    };
-  },
-  computed: {
-    set() {
-      return this.$store.state.setting;
-    },
-    user() {
-      return this.$store.state.user.user;
-    },
-  },
-  methods: {
-    handleClick() {
-      this.$store.commit('SET_SETTING', { collapsed: !this.set.collapsed });
-    },
-    logout() {
-      this.$store.dispatch('logout');
-    },
-  },
-};
+const store = useStore()
+const set = computed(() => store.state.setting)
+const user = computed(() => store.state.user.user)
+let handleClick = () => {
+  store.commit('setting/SET_SETTING', { collapsed: !set.value.collapsed });
+}
+let logout = () => {
+  store.dispatch('user/logout');
+}
 </script>
 
 <style lang='less' scoped>

@@ -1,12 +1,11 @@
 <template>
-  <page-layout>
-    <div class="test">我是测试哦</div>
-  </page-layout>
+  <div class="container">
+    <div class="title">我是test</div>
+  </div>
 </template>
 
-<script>
-export default {};
+<script lang='ts' setup>
 </script>
 
-<style>
+<style lang='less' scoped>
 </style>

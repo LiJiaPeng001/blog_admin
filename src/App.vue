@@ -1,17 +1,11 @@
 <template>
   <a-config-provider :locale="locale">
-    <router-view />
+    <router-view :key="$route.fullPath" />
   </a-config-provider>
 </template>
 
-<script>
+<script setup lang='ts'>
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
 
-export default {
-  data() {
-    return {
-      locale: zhCN,
-    };
-  },
-};
+let locale = zhCN
 </script>

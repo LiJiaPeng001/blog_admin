@@ -33,56 +33,75 @@
   </page-layout>
 </template>
 
-<script>
+<script setup lang="ts">
 import * as Api from '@/api/blog';
-import { list as cateList } from '@/api/cate';
+import { list } from '@/api/cate';
+import { message } from 'ant-design-vue';
+import { onMounted, ref, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
-export default {
-  data() {
-    let { id = '' } = this.$route.query;
-    return {
-      id,
-      data: { id },
-      labelCol: { span: 3 },
-      wrapperCol: { span: 12 },
-      rules: {
-        title: [{ required: true, message: '请输入标题' }],
-        cateId: [{ required: true, message: '请选择分类' }],
-        content: [{ required: true, message: '请输入内容' }],
-      },
-      cateList: [],
-    };
-  },
-  mounted() {
-    this.id && this.fetchData();
-    this.fetchCate();
-  },
-  methods: {
-    async fetchCate() {
-      let { list } = await cateList();
-      this.cateList = list;
-    },
-    async fetchData() {
-      let data = await Api.detail(this.id);
-      this.data = data;
-    },
-    filterOption(input, option) {
-      return (
-        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      );
-    },
-    async submit() {
-      await this.$refs.ruleForm.validate();
-      if (this.id) {
-        await Api.update(this.data);
-      } else {
-        await Api.add(this.data);
-      }
-      this.$message.success(this.id ? '更新成功' : '添加成功');
-      this.$router.back();
-    },
-  },
-};
+let route = useRoute()
+let router = useRouter()
+
+let id = ref(0)
+id = route.query.id
+
+let labelCol = { span: 3 }
+let wrapperCol = { span: 12 }
+let ruleForm = ref()
+let rules = {
+  title: [{ required: true, message: '请输入标题' }],
+  cateId: [{ required: true, message: '请选择分类' }],
+  content: [{ required: true, message: '请输入内容' }],
+}
+interface CateInter {
+  id: number,
+  name: string
+}
+
+let cateList = ref<CateInter[]>([])
+
+interface DataMaps {
+  title: string,
+  cateId: number | string,
+  content: string
+}
+let data = ref<DataMaps>({
+  title: '',
+  cateId: '',
+  content: ''
+})
+
+onMounted(() => {
+  id && fetchData();
+  fetchCate();
+})
+
+let fetchCate = async () => {
+  let data = await list();
+  cateList.value = data.list;
+}
+
+let fetchData = async () => {
+  let d = await Api.detail(id);
+  data.value = d;
+}
+let filterOption = (input: string, option: any) => {
+  return (
+    option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  );
+}
+let submit = async () => {
+  await ruleForm.value.validate();
+  if (id) {
+    await Api.update({ ...data.value, id });
+  } else {
+    await Api.add(data.value);
+  }
+  message.success(id ? '更新成功' : '添加成功');
+  router.back();
+}
 </script>
 
 <style lang='less'>

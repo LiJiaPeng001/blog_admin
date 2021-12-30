@@ -10,84 +10,69 @@
         :wrapper-col="wrapperCol"
         class="form-model"
         ref="form"
-        :model="form"
+        :model="forms"
         :rules="rules"
         @finish="onSubmit"
       >
         <a-form-item name="phone">
-          <a-input
-            size="large"
-            placeholder="请输入手机号"
-            v-model:value="form.phone"
-          >
-            <template #prefix><PhoneFilled /></template>
+          <a-input size="large" placeholder="请输入手机号" v-model:value="forms.phone">
+            <template #prefix>
+              <PhoneFilled />
+            </template>
           </a-input>
         </a-form-item>
         <a-form-item name="password">
-          <a-input
-            size="large"
-            placeholder="请输入密码"
-            v-model:value="form.password"
-          >
-            <template #prefix><LockFilled /></template>
+          <a-input size="large" placeholder="请输入密码" v-model:value="forms.password">
+            <template #prefix>
+              <LockFilled />
+            </template>
           </a-input>
         </a-form-item>
         <a-form-item>
-          <a-button
-            size="large"
-            style="width: 100%"
-            type="primary"
-            htmlType="submit"
-            >登录</a-button
-          >
+          <a-button size="large" style="width: 100%" type="primary" htmlType="submit">登录</a-button>
         </a-form-item>
       </a-form>
-      <div class="halo-phone">客服热线：{{ haloPhone }}</div>
+      <div class="halo-phone">客服热线：{{ phone }}</div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup lang='ts'>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { PhoneFilled, LockFilled } from "@ant-design/icons-vue";
 
-export default {
-  components: {
-    LockFilled,
-    PhoneFilled,
-  },
-  data() {
-    return {
-      labelCol: { span: 0 },
-      wrapperCol: { span: 24 },
-      title: process.env.VUE_APP_HOME_TITLE,
-      haloPhone: process.env.VUE_APP_HALO_PHONE,
-      form: {
-        phone: "13673717028",
-        password: "123456",
-      },
-      rules: {
-        phone: [
-          {
-            required: true,
-            pattern: /^1\d{10}$/,
-            message: "请正确输入手机号",
-          },
-        ],
-        password: [{ required: true, message: "请输入验证码" }],
-      },
-    };
-  },
-  methods: {
-    async onSubmit() {
-      await this.$refs.form.validate();
-      await this.$store.dispatch("login", this.form);
-      this.$router.replace("/home");
+let router = useRouter()
+let store = useStore()
+
+let labelCol = { span: 0 }
+let wrapperCol = { span: 24 }
+let title = import.meta.env.VITE_TITLE
+
+let phone = 13673717028
+let forms = ref({
+  phone: "13673717028",
+  password: "123456",
+})
+let form = ref()
+let rules = ref({
+  phone: [
+    {
+      required: true,
+      pattern: /^1\d{10}$/,
+      message: "请正确输入手机号",
     },
-    resetForm() {
-      this.$refs.form.resetFields();
-    },
-  },
-};
+  ],
+  password: [{ required: true, message: "请输入验证码" }],
+})
+
+
+let onSubmit = async () => {
+  await form.value.validate();
+  await store.dispatch("user/login", forms.value);
+  router.replace("/home");
+}
 </script>
 
 <style lang="less" scoped>

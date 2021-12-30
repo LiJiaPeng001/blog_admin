@@ -6,24 +6,23 @@
           <router-link :to="{ path: it.path }">{{ it.meta ? it.meta.title : it.name }}</router-link>
         </a-breadcrumb-item>
       </a-breadcrumb>
-      <div class="route-title">{{ title || this.$route.meta.title }}</div>
+      <div class="route-title">{{ title || route.meta.title }}</div>
     </div>
     <div class="main-content">
       <slot></slot>
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    title: {
-      type: String,
-      default: '',
-    },
-  },
-};
+<script setup lang="ts">
+import { useRoute } from 'vue-router'
+
+let route = useRoute()
+defineProps({
+  title: String
+})
+
 </script>
 
 <style lang='less'>

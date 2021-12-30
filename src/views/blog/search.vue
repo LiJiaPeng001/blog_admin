@@ -10,35 +10,33 @@
   </a-form>
 </template>
 
-<script>
-export default {
-  props: {
-    payload: {
-      type: Object,
-      defualt: () => ({}),
-    },
-  },
-  data() {
-    return {
-      form: this.payload,
-    };
-  },
-  watch: {
-    payload() {
-      this.form = this.payload;
-    },
-  },
-  methods: {
-    submit() {
-      this.$emit('update:payload', { ...this.form, page: 1 });
-      this.$emit('fetch');
-    },
-    reset() {
-      this.form = {};
-      this.submit();
-    },
-  },
-};
+<script setup lang="ts">
+import { watchEffect } from 'vue';
+
+const { payload = {} } = defineProps({
+  payload: {
+    type: Object,
+    defualt: () => ({}),
+  }
+})
+
+const emits = defineEmits(['update:payload', 'fetch'])
+
+let form = payload
+
+watchEffect(() => {
+  form = payload;
+})
+
+let submit = () => {
+  emits('update:payload', { ...form, page: 1 });
+  emits('fetch');
+}
+
+let reset = () => {
+  form = {};
+  submit();
+}
 </script>
 
 <style lang='less' scoped>

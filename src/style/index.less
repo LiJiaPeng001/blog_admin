@@ -1,22 +1,42 @@
-.flex {
-  display: flex;
+@import "./common/index.less";
+@import "./variable.less";
+body {
+  min-height: 100vh;
+  background-color: #f0f2f5 !important;
 }
-.middle-flex {
-  display: flex;
-  align-items: center;
+
+.text {
+  cursor: pointer;
+  transition: 0.1s linear;
+  &:hover {
+    color: @primary-color;
+  }
 }
-.center-flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+.primary-color {
+  color: @primary-color;
 }
-img.cover {
-  object-fit: cover;
-  object-position: center;
+
+.word-break {
+  word-wrap: break-word;
+  word-break: break-all;
 }
-.cover {
-  background-position: center;
-  background-size: cover;
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.page-content {
+  width: @pc-width;
+  margin: 0 auto;
+}
+
+.user-select {
+  user-select: none;
+  -webkit-user-select: none;
 }
 .action-box {
   span {

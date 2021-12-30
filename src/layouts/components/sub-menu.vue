@@ -1,8 +1,6 @@
 <template>
   <a-sub-menu :key="menuInfo.key" v-bind="$attrs">
-    <template #title>
-      {{ menuInfo.meta ? menuInfo.meta.title : menuInfo.name }}
-    </template>
+    <template #title>{{ menuInfo.meta ? menuInfo.meta.title : menuInfo.name }}</template>
     <template v-for="item in menuInfo.children" :key="item.path">
       <template v-if="!item.children">
         <a-menu-item :key="item.path">
@@ -16,16 +14,14 @@
   </a-sub-menu>
 </template>
 
-<script>
-export default {
-  name: 'subMenu',
-  props: {
-    menuInfo: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-};
+<script setup lang=ts>
+
+defineProps({
+  menuInfo: {
+    type: Object,
+    default: () => { }
+  }
+})
 </script>
 
 <style>
