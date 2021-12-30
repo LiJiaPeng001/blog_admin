@@ -13,19 +13,18 @@
 <script setup lang="ts">
 import { watchEffect } from 'vue';
 
-const { payload = {} } = defineProps({
+const props = defineProps<{
   payload: {
-    type: Object,
-    defualt: () => ({}),
+    title: string
   }
-})
+}>();
 
 const emits = defineEmits(['update:payload', 'fetch'])
 
-let form = payload
+let form = props.payload
 
 watchEffect(() => {
-  form = payload;
+  form = props.payload;
 })
 
 let submit = () => {
@@ -34,7 +33,7 @@ let submit = () => {
 }
 
 let reset = () => {
-  form = {};
+  form = { title: '' };
   submit();
 }
 </script>

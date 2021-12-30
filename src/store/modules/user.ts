@@ -3,7 +3,8 @@ import * as Api from '@/api/user'
 
 interface UserState {
   user: {
-    token: string
+    token: string,
+    [key: string]: string
   }
 }
 
